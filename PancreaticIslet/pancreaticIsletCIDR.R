@@ -5,16 +5,6 @@ library(cidr)
 ## Tag tables were downloaded from the data repository NCBI Gene Expression Omnibus (GSE73727)
 ## Tag tables were combined into one table and undefined cells and bulk RNA-Seq samples have been excluded.
 ## Pseudo-tag 1 has been subtracted from each entry.
-# pancreaticIsletTags <- read.csv("pancreaticIsletTags.csv")
-# rownames(pancreaticIsletTags) <- pancreaticIsletTags[,1]
-# pancreaticIsletTags <- pancreaticIsletTags[,-1]
-# pancreaticIsletTags <- pancreaticIsletTags - 1
-# info <- read.csv("SraRunTable.txt",sep="\t")
-# pancreaticIsletTags <- pancreaticIsletTags[,!is.na(info$assigned_cell_type_s[match(colnames(pancreaticIsletTags),info$Sample_Name_s)])]
-# pancreaticIsletTags <- pancreaticIsletTags[,(info$assigned_cell_type_s[match(colnames(pancreaticIsletTags),info$Sample_Name_s)])!="undefined"]
-# pancreaticIsletTags <- pancreaticIsletTags[,(info$assigned_cell_type_s[match(colnames(pancreaticIsletTags),info$Sample_Name_s)])!="islet"]
-# write.csv(pancreaticIsletTags, file="pancreaticIsletTags.csv")
-
 pancreaticIsletTags <- read.csv("pancreaticIsletTags.csv")
 rownames(pancreaticIsletTags) <- pancreaticIsletTags[,1]
 pancreaticIsletTags <- pancreaticIsletTags[,-1]
