@@ -44,6 +44,17 @@ scPan <- scCluster(scPan)
 plot(scPan@PC[,c(1,2)],col=cols,pch=scPan@clusters,main="CIDR",xlab="PC1",ylab="PC2")
 legend("bottomright",legend = types, col = scols,pch=1)
 
+## 3D
+library(plot3D)
+scatter3D(scPan@PC[,1],scPan@PC[,2],scPan@PC[,3],
+          xlab="PC1", ylab="PC2", zlab="PC3",
+          colvar=NULL,col=cols,pch=scPan@clusters,phi=5,theta=55,pch=20)
+legend("bottomright",legend = types, col = scols,pch=1)
+
+## 3D interactive
+library(rgl)
+plot3d(scPan@PC[,1:3],col=cols, xlab = "PC1", ylab="PC2", zlab="PC3")
+
 ## Use Adjusted Rand Index to measure the accuracy of CIDR clustering
 ARI_CIDR <- adjustedRandIndex(scPan@clusters,cols)
 ARI_CIDR
