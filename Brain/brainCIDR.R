@@ -41,6 +41,7 @@ scBrain <- determineDropoutCandidates(scBrain)
 scBrain <- wThreshold(scBrain)
 scBrain <- scDissim(scBrain)
 scBrain <- scPCA(scBrain)
+nCluster(scBrain)
 scBrain <- scCluster(scBrain)
 
 ## Two dimensional visualization plot output by CIDR
@@ -55,14 +56,14 @@ ARI_CIDR
 ## 0.8977449
 
 ## This section shows how to alter the paramters of CIDR ###
-## Use 8 instead of 4 principal coordinates in clustering
-scBrain@nPC <- 8
+## Use 6 instead of 4 principal coordinates in clustering
+scBrain@nPC <- 6
 scBrain <- scCluster(scBrain)
 plot(scBrain@PC[,c(1,2)],xlim=c(-65,100),col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
 legend("bottomright",legend = types,col = scols,pch=1)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
-## 0.9272098
+## 0.9068305
 
 ## Use a different imputation weighting threshold
 scBrain@wThreshold <- 8
@@ -73,17 +74,14 @@ plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",yl
 legend("bottomright",legend = types,col = scols,pch=1)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
-## 0.7659533
+## 0.6587003
 
-## Alter the number of clusters
-scBrain <- wThreshold(scBrain)
-scBrain <- scDissim(scBrain)
-scBrain <- scPCA(scBrain)
+## Examine the Calinski-Harabasz Index versus Number of Clusters plot
 nCluster(scBrain)
-scBrain@nCluster <- 6
-scBrain <- scCluster(scBrain)
-plot(scBrain@PC[,c(1,2)],xlim=c(-65,100),col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1", ylab="PC2")
+## A better choice for nCluster is 5
+scBrain <- scCluster(scBrain, nCluster=5)
+plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
 legend("bottomright",legend = types,col = scols,pch=1)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
-## 0.8826482
+## 0.8243999
