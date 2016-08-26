@@ -57,8 +57,7 @@ ARI_CIDR
 
 ## This section shows how to alter the paramters of CIDR ###
 ## Use 6 instead of 4 principal coordinates in clustering
-scBrain@nPC <- 6
-scBrain <- scCluster(scBrain)
+scBrain <- scCluster(scBrain,nPC=6)
 plot(scBrain@PC[,c(1,2)],xlim=c(-65,100),col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
 legend("bottomright",legend = types,col = scols,pch=1)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
