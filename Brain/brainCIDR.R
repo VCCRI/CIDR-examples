@@ -1,4 +1,4 @@
-## install CIDR from http://github.com/VCCRI/CIDR
+## install CIDR from https://github.com/VCCRI/CIDR
 library(cidr)
 
 ## Read in data 
@@ -48,7 +48,7 @@ scBrain <- scCluster(scBrain)
 ## Different colors denote the cell types annotated by the human brain single-cell RNA-Seq study
 ## Different plotting symbols denote the clusters output by CIDR
 plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types, col = scols,pch=1)
+legend("bottomright",legend = types, col = scols,pch=15)
 
 ## Use Adjusted Rand Index to measure the accuracy of CIDR clustering
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
@@ -59,7 +59,7 @@ ARI_CIDR
 ## Use 6 instead of 4 principal coordinates in clustering
 scBrain <- scCluster(scBrain,nPC=6)
 plot(scBrain@PC[,c(1,2)],xlim=c(-65,100),col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types,col = scols,pch=1)
+legend("bottomright",legend = types,col = scols,pch=15)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
 ## 0.9068305
@@ -70,7 +70,7 @@ scBrain <- scDissim(scBrain)
 scBrain <- scPCA(scBrain)
 scBrain <- scCluster(scBrain)
 plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types,col = scols,pch=1)
+legend("bottomright",legend = types,col = scols,pch=15)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
 ## 0.6587003
@@ -80,7 +80,7 @@ nCluster(scBrain)
 ## A better choice for nCluster is 5
 scBrain <- scCluster(scBrain, nCluster=5)
 plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types,col = scols,pch=1)
+legend("bottomright",legend = types,col = scols,pch=15)
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
 ## 0.8243999

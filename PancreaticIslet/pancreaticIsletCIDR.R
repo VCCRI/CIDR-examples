@@ -1,4 +1,7 @@
-## install CIDR from http://github.com/VCCRI/CIDR
+## install CIDR from https://github.com/VCCRI/CIDR
+## install the package plot3D for 3D plots
+## install the package rgl for interactive 3D plots
+
 library(cidr)
 
 ## Read in data 
@@ -42,14 +45,14 @@ scPan <- scCluster(scPan)
 ## Different colors denote the cell types annotated by the human pancreatic islet single-cell RNA-Seq study
 ## Different plotting symbols denote the clusters output by CIDR
 plot(scPan@PC[,c(1,2)],col=cols,pch=scPan@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types, col = scols,pch=1)
+legend("bottomright",legend = types, col = scols,pch=15)
 
 ## 3D
 library(plot3D)
 scatter3D(scPan@PC[,1],scPan@PC[,2],scPan@PC[,3],
           xlab="PC1", ylab="PC2", zlab="PC3",
           colvar=NULL,col=cols,pch=scPan@clusters,phi=5,theta=55,pch=20)
-legend("bottomright",legend = types, col = scols,pch=1)
+legend("bottomright",legend = types, col = scols,pch=15)
 
 ## 3D interactive
 library(rgl)
