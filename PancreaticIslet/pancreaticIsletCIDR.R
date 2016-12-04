@@ -28,8 +28,10 @@ priorTPM <- 1
 pan10 <- pancreaticIsletTags[rowSums(pancreaticIsletTags)>10,]
 pan10_lcpm <- log2(t(t(pan10)/colSums(pan10))*1000000+priorTPM)
 PC_lcpm <- prcomp(t(pan10_lcpm))
-plot(PC_lcpm$x[,c(1,2)],col=cols,pch=1,xlab="PC1",ylab="PC2",main="prcomp")
-legend("topright",legend = types,col = scols,pch=1)
+plot(PC_lcpm$x[,c(1,2)], col=cols, pch=1, 
+     xlab="PC1", ylab="PC2", 
+     main="Principal Component Analysis (prcomp)")
+legend("topright", legend=types, col=scols, pch=1)
 
 ###########
 ## CIDR ###
@@ -39,24 +41,28 @@ scPan <- determineDropoutCandidates(scPan)
 scPan <- wThreshold(scPan)
 scPan <- scDissim(scPan)
 scPan <- scPCA(scPan)
+scPan <- nPC(scPan)
 scPan <- scCluster(scPan)
 
 ## Two dimensional visualization plot output by CIDR
 ## Different colors denote the cell types annotated by the human pancreatic islet single-cell RNA-Seq study
 ## Different plotting symbols denote the clusters output by CIDR
-plot(scPan@PC[,c(1,2)],col=cols,pch=scPan@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types, col = scols,pch=15)
+plot(scPan@PC[,c(1,2)], col=cols, pch=scPan@clusters, 
+     main="CIDR", xlab="PC1", ylab="PC2")
+legend("bottomleft", legend=types, col=scols, pch=15)
 
 ## 3D
 library(plot3D)
-scatter3D(scPan@PC[,1],scPan@PC[,2],scPan@PC[,3],
+scatter3D(scPan@PC[,1], scPan@PC[,2], scPan@PC[,3],
           xlab="PC1", ylab="PC2", zlab="PC3",
-          colvar=NULL,col=cols,pch=scPan@clusters,phi=5,theta=55,pch=20)
-legend("bottomright",legend = types, col = scols,pch=15)
+          colvar=NULL, col=cols, pch=scPan@clusters, 
+          phi=5, theta=55, pch=20)
+legend("bottomright", legend=types, col=scols, pch=15)
 
-## 3D interactive
+## 3D - interactive
 library(rgl)
-plot3d(scPan@PC[,1:3],col=cols, xlab = "PC1", ylab="PC2", zlab="PC3")
+plot3d(scPan@PC[,1:3], col=cols, 
+       xlab="PC1", ylab="PC2", zlab="PC3")
 
 ## Use Adjusted Rand Index to measure the accuracy of CIDR clustering
 ARI_CIDR <- adjustedRandIndex(scPan@clusters,cols)

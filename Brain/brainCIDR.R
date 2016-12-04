@@ -31,8 +31,11 @@ priorTPM <- 1
 brain10 <- brainTags[rowSums(brainTags)>10,]
 brain10_lcpm <- log2(t(t(brain10)/colSums(brain10))*1000000+priorTPM)
 pca <- prcomp(t(brain10_lcpm))
-plot(pca$x[,c(1,2)],col=cols,pch=1,xlab="PC1",ylab="PC2",main="Principal Component Analysis (prcomp)")
-legend("bottomleft",legend = types,col = scols,pch=1)
+plot.new()
+legend("center", legend=types, col=scols, pch=1)
+plot(pca$x[,c(1,2)], col=cols, pch=1,
+     xlab="PC1", ylab="PC2",
+     main="Principal Component Analysis (prcomp)")
 
 #### CIDR ######
 ################
@@ -41,46 +44,61 @@ scBrain <- determineDropoutCandidates(scBrain)
 scBrain <- wThreshold(scBrain)
 scBrain <- scDissim(scBrain)
 scBrain <- scPCA(scBrain)
+scBrain <- nPC(scBrain)
 nCluster(scBrain)
 scBrain <- scCluster(scBrain)
 
 ## Two dimensional visualization plot output by CIDR
 ## Different colors denote the cell types annotated by the human brain single-cell RNA-Seq study
 ## Different plotting symbols denote the clusters output by CIDR
-plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types, col = scols,pch=15)
+plot.new()
+legend("center", legend=types, col=scols, pch=15)
+plot(scBrain@PC[,c(1,2)], col=cols, pch=scBrain@clusters, 
+     main="CIDR", xlab="PC1", ylab="PC2")
 
 ## Use Adjusted Rand Index to measure the accuracy of CIDR clustering
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
 ## 0.8977449
 
-## This section shows how to alter the paramters of CIDR ###
+## This section shows how to alter the parameters of CIDR
+scBrain@nPC
+## The default number of principal coordinates used in clustering is 4
 ## Use 6 instead of 4 principal coordinates in clustering
-scBrain <- scCluster(scBrain,nPC=6)
-plot(scBrain@PC[,c(1,2)],xlim=c(-65,100),col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types,col = scols,pch=15)
+scBrain <- scCluster(scBrain, nPC=6)
+
+plot(scBrain@PC[,c(1,2)],
+     col=cols, pch=scBrain@clusters, main="CIDR (nPC=6)", 
+     xlab="PC1", ylab="PC2")
+
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
 ## 0.9068305
+
+scBrain@nCluster
+## The default number of clusters is 6
+## Examine the Calinski-Harabasz Index versus Number of Clusters plot
+nCluster(scBrain)
+## Try 10 clusters
+scBrain <- scCluster(scBrain, nCluster=10)
+
+plot(scBrain@PC[,c(1,2)], col=cols, pch=scBrain@clusters, 
+     main="CIDR (nPC=6, nCluster=10)", xlab="PC1", ylab="PC2")
+
+ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
+ARI_CIDR
+## 0.7294235
 
 ## Use a different imputation weighting threshold
 scBrain@wThreshold <- 8
 scBrain <- scDissim(scBrain)
 scBrain <- scPCA(scBrain)
+scBrain <- nPC(scBrain)
 scBrain <- scCluster(scBrain)
-plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types,col = scols,pch=15)
-ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
-ARI_CIDR
-## 0.6587003
 
-## Examine the Calinski-Harabasz Index versus Number of Clusters plot
-nCluster(scBrain)
-## A better choice for nCluster is 5
-scBrain <- scCluster(scBrain, nCluster=5)
-plot(scBrain@PC[,c(1,2)],col=cols,pch=scBrain@clusters,main="CIDR",xlab="PC1",ylab="PC2")
-legend("bottomright",legend = types,col = scols,pch=15)
+plot(scBrain@PC[,c(1,2)], col=cols, pch=scBrain@clusters, 
+     main="CIDR (wThreshold=8)", xlab="PC1", ylab="PC2")
+
 ARI_CIDR <- adjustedRandIndex(scBrain@clusters,cols)
 ARI_CIDR
-## 0.8243999
+## 0.8101352
